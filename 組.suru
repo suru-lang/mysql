@@ -1,0 +1,5 @@
+名前 とは 「MySQL」
+版 とは 「0.1.0」
+外部依存 とは 「mysqlclient@21」
+導入案内 とは 「macOS: brew install mysql-client して export PKG_CONFIG_PATH="$(brew --prefix mysql-client)/lib/pkgconfig"」 と 「Debian・Ubuntu: sudo apt install libmysqlclient-dev」 と 「Fedora: sudo dnf install mysql-devel」
+依存 とは 「github.com/suru-lang/db@0.1.0」

@@ -1,0 +1,68 @@
+# kumu 試験 と kumu 点検 を、Linux(MySQL はサービスのコンテナ)と macOS(Homebrew の MySQL)で動かします
+name: 試験
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: suru_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -proot" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: suru_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: libmysqlclient と clang を入れる
+        run: sudo apt-get update && sudo apt-get install -y libmysqlclient-dev clang pkg-config
+      - name: kumu を入れる
+        run: go install github.com/suru-lang/suru/cmd/kumu@main
+      - name: 試験
+        run: ~/go/bin/kumu 試験
+      - name: 点検
+        run: ~/go/bin/kumu 点検
+
+  macos:
+    runs-on: macos-latest
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_USER: root
+      MYSQL_DATABASE: suru_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: MySQL を入れて動かす
+        run: |
+          brew install mysql pkg-config
+          brew services start mysql
+          for i in $(seq 1 60); do mysqladmin ping -h 127.0.0.1 -uroot --silent && break; sleep 1; done
+          mysql -h 127.0.0.1 -uroot -e "CREATE DATABASE IF NOT EXISTS suru_test CHARACTER SET utf8mb4"
+          echo "PKG_CONFIG_PATH=$(brew --prefix mysql)/lib/pkgconfig" >> "$GITHUB_ENV"
+      - name: kumu を入れる
+        run: go install github.com/suru-lang/suru/cmd/kumu@main
+      - name: 試験
+        run: ~/go/bin/kumu 試験
+      - name: 点検
+        run: ~/go/bin/kumu 点検
