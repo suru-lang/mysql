@@ -14,6 +14,8 @@ kumu 追加 github.com/suru-lang/mysql
 
 「蔵」 (suru-lang/db) comes along as a dependency. libmysqlclient (MySQL 8.0 or later) is required on the system (the `外部依存` in 組.suru; if it is missing, kumu shows how to install it and stops).
 
+Suru 0.9.0 or later is required (the library writes its C functions with 「以下の外部の入出力動作です … 以上です」).
+
 - macOS: `brew install mysql-client`, then `export PKG_CONFIG_PATH="$(brew --prefix mysql-client)/lib/pkgconfig"`
 - Debian, Ubuntu: `sudo apt install libmysqlclient-dev`
 - Fedora: `sudo dnf install mysql-devel`
