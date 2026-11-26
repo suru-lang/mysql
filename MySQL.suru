@@ -24,49 +24,31 @@
 
 # --- C の関数 ---
 
-数 を MY確保する は 番地 の 動作
-n を MY確保する とは 外部の「malloc」
-番地 を MY解放する は 無 の 動作
-p を MY解放する とは 外部の「free」
+以下は外部の入出力動作です
+  数 を MY確保する は 「malloc」 で 番地 を 返します
+  番地 を MY解放する は 「free」 で 無 を 返します
 
-番地 を MY低初期化する は 番地 の 動作
-p を MY低初期化する とは 外部の「mysql_init」
-番地 を MY低閉鎖する は 無 の 動作
-m を MY低閉鎖する とは 外部の「mysql_close」
-番地 を MY低誤文取得する は 文字列 の 動作
-m を MY低誤文取得する とは 外部の「mysql_error」
-# mysql_real_connect(m, host, user, passwd, db, port, unix_socket = NULL, CLIENT_MULTI_STATEMENTS)
-番地 を 番地 で 番地 に 番地 から 番地 へ 整数 より MY低接続する は 番地 の 動作
-m を 主 で 利 に 鍵 から 庫 へ 港 より MY低接続する とは 外部の「mysql_real_connect」（m と 主 と 利 と 鍵 と 庫 と 港 と 0 と 65536）
-番地 で 文字列 を MY文字集合設定する は 整数 の 動作
-m で 名 を MY文字集合設定する とは 外部の「mysql_set_character_set」
-番地 で 文字列 を 数 に MY低実行する は 整数 の 動作
-m で 文 を n に MY低実行する とは 外部の「mysql_real_query」
-番地 を MY結果取得する は 番地 の 動作
-m を MY結果取得する とは 外部の「mysql_store_result」
-番地 を MY欄数取得する は 整数 の 動作
-m を MY欄数取得する とは 外部の「mysql_field_count」
-番地 を MY次結果取得する は 整数 の 動作
-m を MY次結果取得する とは 外部の「mysql_next_result」
-番地 を MY変更数取得する は 数 の 動作
-m を MY変更数取得する とは 外部の「mysql_affected_rows」
-番地 を MY番号取得する は 数 の 動作
-m を MY番号取得する とは 外部の「mysql_insert_id」
-番地 で 番地 を 文字列 に 数 から MY低退避する は 数 の 動作
-m で 先 を 元 に n から MY低退避する とは 外部の「mysql_real_escape_string」
+  番地 を MY低初期化する は 「mysql_init」 で 番地 を 返します
+  番地 を MY低閉鎖する は 「mysql_close」 で 無 を 返します
+  番地 を MY低誤文取得する は 「mysql_error」 で 文字列 を 返します
+  # mysql_real_connect(m, host, user, passwd, db, port, unix_socket = NULL, CLIENT_MULTI_STATEMENTS)
+  m を 主 で 利 に 鍵 から 庫 へ 港 より MY低接続する とは 「mysql_real_connect」（m と 主 と 利 と 鍵 と 庫 と 港 と 0 と 65536） で 番地 を 番地 で 番地 に 番地 から 番地 へ 整数 より 受け取って 番地 を 返します
+  番地 で 文字列 を MY文字集合設定する は 「mysql_set_character_set」 で 整数 を 返します
+  番地 で 文字列 を 数 に MY低実行する は 「mysql_real_query」 で 整数 を 返します
+  番地 を MY結果取得する は 「mysql_store_result」 で 番地 を 返します
+  番地 を MY欄数取得する は 「mysql_field_count」 で 整数 を 返します
+  番地 を MY次結果取得する は 「mysql_next_result」 で 整数 を 返します
+  番地 を MY変更数取得する は 「mysql_affected_rows」 で 数 を 返します
+  番地 を MY番号取得する は 「mysql_insert_id」 で 数 を 返します
+  番地 で 番地 を 文字列 に 数 から MY低退避する は 「mysql_real_escape_string」 で 数 を 返します
 
-番地 を MY結果解放する は 無 の 動作
-r を MY結果解放する とは 外部の「mysql_free_result」
-番地 を MY列数取得する は 整数 の 動作
-r を MY列数取得する とは 外部の「mysql_num_fields」
-番地 を MY行数取得する は 数 の 動作
-r を MY行数取得する とは 外部の「mysql_num_rows」
-番地 を MY行取得する は 番地 の 動作
-r を MY行取得する とは 外部の「mysql_fetch_row」
-番地 を MY長さ群取得する は 番地 の 動作
-r を MY長さ群取得する とは 外部の「mysql_fetch_lengths」
-番地 で 整数 を MY欄取得する は 番地 の 動作
-r で i を MY欄取得する とは 外部の「mysql_fetch_field_direct」
+  番地 を MY結果解放する は 「mysql_free_result」 で 無 を 返します
+  番地 を MY列数取得する は 「mysql_num_fields」 で 整数 を 返します
+  番地 を MY行数取得する は 「mysql_num_rows」 で 数 を 返します
+  番地 を MY行取得する は 「mysql_fetch_row」 で 番地 を 返します
+  番地 を MY長さ群取得する は 「mysql_fetch_lengths」 で 番地 を 返します
+  番地 で 整数 を MY欄取得する は 「mysql_fetch_field_direct」 で 番地 を 返します
+以上です
 
 # MYSQL_FIELD の中の位置(64 ビットの libmysqlclient 8): name は 0、charsetnr は 108、type は 112
 MY欄名位置 とは 0
