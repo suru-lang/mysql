@@ -54,6 +54,17 @@ All the functions are those of 「蔵」 (see its README). Replacing `MySQL駆�
 5. **The last id.** `DB最終番号取得する` is `mysql_insert_id`: the AUTO_INCREMENT value of the last INSERT on the connection.
 6. **Failures are runtime errors.** They carry MySQL's message, like 「MySQL で『SELEC 1』を実行するのに失敗しました(You have an error in your SQL syntax; …)」 ("failed to run 『SELEC 1』 in MySQL (…)"), and are catchable with `試行する`. Note that MySQL commits implicitly on statements like CREATE TABLE, so they can't be rolled back by `DB取引する`.
 
+## API documentation
+
+The API documentation is made from the comments in `MySQL.suru`: the head comment of the file and the comment right above each public definition, written in English.
+
+```sh
+kumu 文書                                                            # writes docs/api/MySQL.md
+pip install -r docs/requirements.txt && sphinx-build docs docs/_build   # HTML in docs/_build
+```
+
+`docs/` and `.readthedocs.yaml` were written by `kumu 文書 --雛形` (Suru 0.11.0 or later). On every build, Read the Docs downloads kumu 0.11.0, runs `kumu 文書 --出力 docs/api` and then Sphinx, so the generated pages are not committed. The editor hover shows the same descriptions.
+
 ## Tests
 
 The tests use a real MySQL server, chosen with the environment variables (`MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`). They create and drop tables named `人_…`.
