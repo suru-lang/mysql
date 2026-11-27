@@ -1,21 +1,18 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 sugarsweetrobotics(LICENSE)
-# 「する」の MySQL の駆動(データベースの層「蔵」で使います。libmysqlclient を外部の関数として呼びます)
-# kumu 追加 github.com/suru-lang/mysql で依存に足し、使うファイルに 「MySQL」 を 読み込んで 使う と書きます。
+# The MySQL driver for Suru, used with the database layer 「蔵」. It calls libmysqlclient through external functions.
+# Add it with `kumu 追加 github.com/suru-lang/mysql` and write `「MySQL」 を 読み込んで 使う` in your file.
 #
-#   先 を MySQL駆動 で DB開封する   … つなぐ。先 は 「host=127.0.0.1 port=3306 user=花子 password=… database=店」 のような
-#                                     「名前=値」を空白で区切ったもの(値に空白は書けません)。書かなかったものは環境変数
-#                                     MYSQL_HOST・MYSQL_PORT・MYSQL_USER・MYSQL_PASSWORD・MYSQL_DATABASE から取ります
-# あとは「蔵」の関数(DB実行する・DB差込問合する・DB行問合する・DB取引する など)で使います。
-#   - 文字は utf8mb4 でやりとりします
-#   - 「?」には、値を mysql_real_escape_string で文字にしたもの(バイト列は X'…')を入れて送ります
-#     (文字列・囲んだ名前の中の「?」はそのまま)
-#   - 値のない DB実行する は「;」で区切って何文でも書けます(結果は最後の文のもの)
-#   - DB最終番号取得する は mysql_insert_id(AUTO_INCREMENT の最後の値)
-#   - 読んだ値: 整数・小数・DECIMAL は DB数、BINARY・VARBINARY・BLOB は DBバイト列、ほかは DB文字列
-#     (BOOLEAN は TINYINT(1) なので DB数 の 1 と 0。DB真偽取出する で真偽にできます)
-# 失敗すると「MySQL で『SELEC 1』を実行するのに失敗しました(You have an error in your SQL syntax; …)」のような
-# 実行時エラーになります(試行する で受け止められます)。
+# `先 を MySQL駆動 で DB開封する` connects. 先 is 「名前=値」 pairs separated by spaces, like 「host=127.0.0.1 port=3306 user=花子 password=… database=店」 (values cannot contain spaces). What is not written is taken from the environment variables MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD and MYSQL_DATABASE.
+# Then use the functions of 「蔵」 (`DB実行する`, `DB差込問合する`, `DB行問合する`, `DB取引する` and so on).
+#
+# - Text is exchanged as utf8mb4.
+# - Each 「?」 is filled with the value made into text by mysql_real_escape_string (bytes as X'…'). A 「?」 inside a string or a quoted name stays as it is.
+# - `DB実行する` without values can run several statements separated by 「;」 (the result is that of the last one).
+# - `DB最終番号取得する` is mysql_insert_id (the last AUTO_INCREMENT value).
+# - Values read: integers, decimals and DECIMAL are `DB数`, BINARY, VARBINARY and BLOB are `DBバイト列`, and the rest are `DB文字列`. BOOLEAN is TINYINT(1), so it is `DB数` 1 or 0; `DB真偽取出する` turns it into a truth value.
+#
+# A failure is a runtime error such as 「MySQL で『SELEC 1』を実行するのに失敗しました(You have an error in your SQL syntax; …)」, which `試行する` can catch.
 外部の「mysqlclient」 を 読み込む
 外部の「c」 を 読み込む
 「標準」 を 読み込んで 使う
@@ -57,6 +54,7 @@ MY欄型位置 とは 112
 
 # --- つなぐ ---
 
+# The MySQL driver for 「蔵」. Use it as `先 を MySQL駆動 で DB開封する`.
 MySQL駆動 とは 「MySQL」 と MY開封すること の DB駆動
 
 文字列 を MY開封する は DB接続 を 返す 入出力動作
@@ -118,7 +116,7 @@ s を MY有文字置場作成する とは 入出力手順
 
 # --- 送る ---
 
-# 送った文の最後の結果: 変わった行の数 と 問い合わせの結果
+# Used inside the library: the result of the last statement sent, with the number of changed rows and the query result.
 MY結果 とは MY結果変更数 と MY結果表 の 組
 
 番地 に 文字列 を DB値 の リスト で MY実行する は 数 を 返す 入出力動作
@@ -170,7 +168,7 @@ r を MY表読取する とは 入出力手順
   r を MY結果解放する
   （行数 と （（欄群 の それぞれ を MY欄名にする） と 行群 の DB問合結果） の MY結果） を 結果にする
 
-# 列ごとの 名前 と 型 と 文字集合
+# Used inside the library: the name, type and character set of one column.
 MY欄 とは MY欄名 と MY欄型 と MY欄文字集合 の 組
 
 MY欄 を MY欄名にする は 文字列
@@ -237,7 +235,7 @@ b を f で MY値にする とは
 
 # --- 「?」に値を入れる ---
 
-# 文を「?」のところで切った断片のリスト(文字列・囲んだ名前・コメントの中は切らない)
+# Used inside the library: the pieces of a statement cut at each 「?」 (strings, quoted names and comments are not cut).
 MY切状態 とは MY切断片群 と MY切今 と MY切内 と MY切逃 の 組
 
 文字列 を MY断片化する は 文字列 の リスト

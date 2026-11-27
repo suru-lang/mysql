@@ -54,6 +54,17 @@ DB行 を 品表示文にする は 文字列
 5. **最後の番号。** `DB最終番号取得する` は `mysql_insert_id` で、その接続の最後の INSERT の AUTO_INCREMENT の値です。
 6. **失敗は実行時エラー。** 「MySQL で『SELEC 1』を実行するのに失敗しました(You have an error in your SQL syntax; …)」のように MySQL の理由が付き、`試行する` で受け止められます。MySQL は CREATE TABLE などの文で暗黙に確定するので、それらは `DB取引する` でも取り消せません。
 
+## API ドキュメント
+
+API ドキュメントは `MySQL.suru` の注釈から作ります。ファイルの頭の注釈と、公開の定義のすぐ上の注釈で、英語で書いています。
+
+```sh
+kumu 文書                                                            # docs/api/MySQL.md を書く
+pip install -r docs/requirements.txt && sphinx-build docs docs/_build   # docs/_build に HTML
+```
+
+`docs/` と `.readthedocs.yaml` は `kumu 文書 --雛形`(する 0.11.0 以上)で書きました。Read the Docs はビルドのたびに kumu 0.11.0 を取ってきて `kumu 文書 --出力 docs/api` を動かしてから Sphinx を動かすので、作ったページはコミットしません。エディタのホバーにも同じ説明が出ます。
+
 ## 試験
 
 試験は本物の MySQL のサーバーを使います。つなぐ先は環境変数(`MYSQL_HOST`・`MYSQL_PORT`・`MYSQL_USER`・`MYSQL_PASSWORD`・`MYSQL_DATABASE`)で決めます。`人_…` という名前の表を作って消します。
